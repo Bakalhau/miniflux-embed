@@ -98,6 +98,9 @@ def send_embed_to_discord(unread_entries):
 # Fetch all unread entries from Miniflux
 unread_entries = client.get_entries(status="unread")["entries"]
 
+if unread_entries == []:
+    print("No new articles found.")
+
 # Mark user entries as read in Miniflux
 client.mark_user_entries_as_read(MINIFLUX_USER_ID)
 
