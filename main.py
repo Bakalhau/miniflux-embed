@@ -35,8 +35,13 @@ def get_icon_url(feed_url):
         root = ET.fromstring(response.content)
         
         # Find the <url> tag within <image>
-        icon_url = root.find(".//image/url").text
-        return icon_url
+        icon_url = root.find(".//image/url")
+        
+        # Check if the icon_element exists and has text, else return None
+        if icon_url is not None and icon_url.text:
+            return icon_url.text
+        else:
+            return None
     else:
         print(f"Error accessing the feed: {response.status_code}")
         return None
@@ -46,6 +51,7 @@ def send_embed_to_discord(unread_entries):
     for entry in unread_entries:
         
         feed_url = entry["feed"]["feed_url"]
+
         icon_url = get_icon_url(feed_url)
         
         # Extract image URL from 'content'
@@ -59,6 +65,9 @@ def send_embed_to_discord(unread_entries):
         
         # Determine the category-specific icon or use the default icon
         category_icon = CATEGORY_ICONS.get(category, "https://i.imgur.com/Nyh7tRG.png")
+
+        if icon_url is None:
+            icon_url = category_icon
 
         # Create the embed payload
         embed = {
