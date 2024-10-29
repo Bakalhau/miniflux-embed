@@ -2,8 +2,9 @@ import requests
 import os
 import re
 import time
-from miniflux import Client
+import random
 import xml.etree.ElementTree as ET
+from miniflux import Client
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,6 +16,9 @@ MINIFLUX_USER_ID = os.getenv("MINIFLUX_USER_ID")
 
 # Discord Webhook configuration
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+
+# Not found images
+NOT_FOUND_IMAGES = ["https://i.imgur.com/5zcBLRc.png", "https://i.imgur.com/aMrGA1A.png"]
 
 client = Client(MINIFLUX_URL, api_key=MINIFLUX_API_KEY)
 
@@ -49,8 +53,10 @@ def send_embed_to_discord(unread_entries):
         # Extract image URL from 'content'
         image_url = extract_image(entry["content"])
 
+        error_image = random.choice(NOT_FOUND_IMAGES)
+
         if image_url is None:
-            image_url = "https://i.imgur.com/5zcBLRc.png"
+            image_url = error_image
         
         # Create the embed payload
         embed = {
