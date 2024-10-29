@@ -6,6 +6,8 @@ import random
 from miniflux import Client
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
+from categories import CATEGORY_COLORS, CATEGORY_ICONS
+from error_images import NOT_FOUND_IMAGES
 
 load_dotenv()
 
@@ -18,26 +20,6 @@ MINIFLUX_USER_ID = os.getenv("MINIFLUX_USER_ID")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 client = Client(MINIFLUX_URL, api_key=MINIFLUX_API_KEY)
-
-NOT_FOUND_IMAGES = ["https://i.imgur.com/5zcBLRc.png", "https://i.imgur.com/aMrGA1A.png"]
-
-# Define colors for each category
-CATEGORY_COLORS = {
-    "Kemono": 15101999,
-    "Coomer": 44543,        
-    "Bluesky": 1148414,        
-    "Mastodon": 5651148,          
-    "X": 000000,
-}
-
-# Define icons for each category
-CATEGORY_ICONS = {
-    "Kemono": "https://i.imgur.com/TF6RA6Z.png",
-    "Coomer": "https://i.imgur.com/3kyQTM8.png",
-    "Bluesky": "https://i.imgur.com/1mcXqLF.png",
-    "Mastodon": "https://i.imgur.com/tUeKKz2.png",
-    "X": "https://i.imgur.com/wXxVrmo.png",
-}
 
 def extract_image(content):
     # Regular expression to find the image URL in the 'content' field
