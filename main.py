@@ -85,8 +85,8 @@ def archive_post(entry):
         return
 
     # Extract necessary details
-    author = entry["author"] or "Unknown Author"
-    category = entry.get("category", {}).get("title", "Uncategorized")
+    author = entry["author"]
+    category = entry["feed"]["category"]["title"]
     author_with_category = f"{author} - {category}"
 
     try:
@@ -128,7 +128,7 @@ def send_embed_to_discord(unread_entries):
         archive_post(entry)
         
         # Determine the embed color based on the entry category
-        category = entry["feed"].get("category", {}).get("title", "Uncategorized")
+        category = entry["feed"]["category"]["title"]
         embed_color = CATEGORY_COLORS.get(category, 16777215)  # White as default if category not found
         
         # Determine the category-specific icon or use the default icon
