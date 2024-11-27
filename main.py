@@ -84,6 +84,12 @@ def archive_post(entry):
     if not ARCHIVE_MODE:
         return
 
+    post_url = entry["url"]
+
+    if not post_url.startswith("https://kemono.su"):
+        print(f"Skipping archive for non-kemono URL: {post_url}")
+        return
+
     # Extract necessary details
     author = entry["author"]
     category = entry["feed"]["category"]["title"]
@@ -106,9 +112,6 @@ def archive_post(entry):
 
     # Create directories
     base_path.mkdir(parents=True, exist_ok=True)
-
-    # Use KToolBox to download the post's content
-    post_url = entry["url"]
     download_with_ktoolbox(post_url)
 
     # Move the downloaded folder to the appropriate location
