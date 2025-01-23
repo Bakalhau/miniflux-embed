@@ -28,8 +28,9 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 client = Client(MINIFLUX_URL, api_key=MINIFLUX_API_KEY)
 
 def extract_image(content):
-    match = re.search(r'(?:<img src="([^"]+)"|<a href="([^"]+\.(?:jpg|jpeg|png|gif))")', content)
-    return match.group(1) if match else None
+    image_matches = re.findall(r'(?:<img src="([^"]+)"|<a href="([^"]+\.(?:jpg|jpeg|png|gif))")', content)
+    matches = [url for match in image_matches for url in match if url]
+    return matches[0] if matches else None
 
 def get_icon_url(feed_url):
     """
